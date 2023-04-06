@@ -1,4 +1,5 @@
 //Pages
+import { View } from "react-native";
 import { AuthProvider } from "./src/contexts/auth";
 import AppRoutes from './src/routes/app.routes'
 

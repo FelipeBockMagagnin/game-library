@@ -1,15 +1,23 @@
 import { useEffect, useState, useContext } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Image } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import AuthContext from "../../src/contexts/auth";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import TypeWriter from 'react-native-typewriter';
+import colors from '../styles/Colors';
+import GamingImage from '../../assets/gaming_undraw.png'
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function SignInScreen() {
+  const [typingText, setTypingText] = useState("Manage");
+  const [typingState, setTypingState] = useState(1)
+  const [currentWord, setCurrentWord] = useState(0);
+
   const [token, setToken] = useState("");
   const [userInfo, setUserInfo] = useState(null);
-  const {signIn} = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: "123044315668-2bfg585k88vrhrcs86a8v2q3vlh3p8vj.apps.googleusercontent.com",
@@ -41,19 +49,57 @@ export default function SignInScreen() {
     }
   };
 
+  function onTypingEndHandler() {
+    let words = ["Manage!  ", "Share!  ", "Grow!  "] 
+
+    if(typingState === 1) {
+      setTypingState(-1);
+      return;
+    }
+
+    if(typingState === -1) {
+      setTypingState(1);
+      setTypingText(words[currentWord]);
+      if(currentWord == words.length) {
+        setCurrentWord(0);
+        return;
+      }
+
+      setCurrentWord(currentWord + 1)
+    }
+  }
+
   return (
     <View style={styles.container}>
-      {userInfo === null ? (
-        <Button
-          title="Sign in with Google"
-          disabled={!request}
-          onPress={() => {
-            promptAsync();
-          }}
-        />
-      ) : (
-        <Text style={styles.text}>{userInfo.name}</Text>
-      )}
+      <Image source={GamingImage}  style={ {
+    width: '100%',
+    height: 250,
+    resizeMode: 'center'
+  }}/>
+      <View style={{display: 'flex', alignItems: 'center'}}>
+        <Text style={styles.title}>Game Library</Text>
+        
+        <TypeWriter 
+          typing={typingState} 
+          minDelay={100} 
+          onTypingEnd={onTypingEndHandler} 
+          style={styles.typing}
+        >
+          {typingText}
+        </TypeWriter>
+      </View>
+      
+
+      <FontAwesome.Button 
+        name="google" 
+        backgroundColor={colors.yellow} 
+        color={colors.dark_green} 
+        style={{  }} 
+        onPress={() => {
+          promptAsync();
+        }}>
+        Continue with Google
+      </FontAwesome.Button>
     </View>
   );
 }
@@ -61,12 +107,21 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
   },
   text: {
     fontSize: 20,
     fontWeight: "bold",
   },
+  title: {
+    fontSize: 36,
+    fontWeight:  "bold",
+    color: colors.yellow
+  },
+  typing: {
+    fontSize: 18,
+    color: colors.yellow,
+    fontWeight: "500",
+  }
 });
