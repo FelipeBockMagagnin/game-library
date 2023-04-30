@@ -51,7 +51,7 @@ export default function Home({ navigation }) {
         <ScrollView horizontal={true} >
           {games.map(game => {
             return (
-              <TouchableOpacity onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
+              <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
                 {game?.cover?.url
                   ? <Image
                     source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
@@ -69,7 +69,7 @@ export default function Home({ navigation }) {
         <ScrollView horizontal={true} >
           {recentGames.map(game => {
             return (
-              <TouchableOpacity onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
+              <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
                 {game?.cover?.url
                   ? <Image
                     source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
@@ -87,7 +87,7 @@ export default function Home({ navigation }) {
         <ScrollView horizontal={true} >
           {upcomingGames.map(game => {
             return (
-              <TouchableOpacity onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
+              <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
                 {game?.cover?.url
                   ? <Image
                     source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}

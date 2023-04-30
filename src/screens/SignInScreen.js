@@ -84,9 +84,8 @@ export default function SignInScreen() {
           minDelay={100} 
           onTypingEnd={onTypingEndHandler} 
           style={styles.typing}
-        >
-          {typingText}
-        </TypeWriter>
+          children={typingText}
+        />
       </View>
       
 

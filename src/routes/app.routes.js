@@ -70,7 +70,7 @@ export default function AppRoutes() {
       }}>
         {signed ? (
           <>
-            <Stack.Screen name="Home" component={HomeTabs} />
+            <Stack.Screen name="HomeTabs" component={HomeTabs} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="Game" component={GameScreen} />
 

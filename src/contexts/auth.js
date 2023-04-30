@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     async function signIn(user) {
+        console.log('setting user', user)
         setUser(user);
     }
 
