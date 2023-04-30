@@ -2,16 +2,19 @@ import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity  } from "re
 import colors from '../styles/Colors';
 import { useEffect, useState } from "react";
 import { getToken, get, getImgUrl } from '../services/igdb'
+import Loading from "../components/Loading";
 
 export default function Discover({navigation}) {
   const [games, setGames] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getToken().then(data => {
       get(data.data.access_token, 'games', "fields cover.url, cover.image_id,name,rating,rating_count, hypes;sort rating_count desc;limit 50;where rating_count > 1000;").then(x => {
         //console.log(x.data);
 
-        setGames(x.data);
+        setGames(x.data)
+        setLoading(false)
       }).catch(err => {
         console.log(err.response.data)
       })
@@ -20,6 +23,9 @@ export default function Discover({navigation}) {
     })
   }, [])
 
+  if(loading){
+    return <Loading/>
+  }
 
   return (
     <View style={styles.container}>

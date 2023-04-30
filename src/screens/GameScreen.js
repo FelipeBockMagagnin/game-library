@@ -56,7 +56,7 @@ export default function GameScreen({ route, navigation }) {
       <View>
         <View style={styles.mt10}>
           <ScrollView horizontal={true}>
-            {game.screenshots.map(screenshot => {
+            {game.screenshots?.map(screenshot => {
               return <Image
                 source={{ uri: getImgUrl('t_screenshot_med', screenshot.image_id) }}
                 style={styles.imageCover}
@@ -76,7 +76,7 @@ export default function GameScreen({ route, navigation }) {
         </Text>
         <View style={styles.flex}>
           <ScrollView horizontal={true}>
-            {game.genres.map(genre => {
+            {game.genres?.map(genre => {
               return <View style={styles.tag}>
                 <Text style={styles.text}>
                   {genre.name}
@@ -91,7 +91,7 @@ export default function GameScreen({ route, navigation }) {
         </Text>
         <View style={styles.flex}>
           <ScrollView horizontal={true}>
-            {game.platforms.map(plataform => {
+            {game.platforms?.map(plataform => {
               return <View style={styles.tag}>
                 <Text style={styles.text}>
                   {plataform.name}
