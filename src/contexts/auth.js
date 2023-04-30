@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 
 const AuthContext = createContext({
-    signed: false,
+    signed: true,
     token: '',
     user: {}
 });
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={
             {
-                signed: !!user,
+                signed: true,
                 token: '',
                 user: user,
                 signIn,

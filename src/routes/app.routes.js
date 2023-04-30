@@ -10,6 +10,7 @@ import HomeScreen from '../screens/HomeScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import SignInScreen from '../screens/SignInScreen'
+import GameScreen from '../screens/GameScreen'
 
 import AuthContext from "../contexts/auth";
 
@@ -71,6 +72,8 @@ export default function AppRoutes() {
           <>
             <Stack.Screen name="Home" component={HomeTabs} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="Game" component={GameScreen} />
+
           </>
         ) : (
           <>

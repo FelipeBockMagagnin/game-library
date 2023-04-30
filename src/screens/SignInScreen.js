@@ -123,5 +123,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.yellow,
     fontWeight: "500",
-  }
+  },
+  
 });
