@@ -1,30 +1,167 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import colors from '../styles/Colors';
+import { useState, useEffect } from "react";
+import { getToken, get, getImgUrl } from '../services/igdb'
+import Loading from "../components/Loading";
+import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function GameScreen() {
+export default function GameScreen({ route, navigation }) {
+  const { name, id } = route.params;
+
+  const [game, setGame] = useState({});
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getToken().then(data => {
+      get(data.data.access_token, 'games', "fields *, screenshots.image_id, platforms.name, genres.name; where id = " + id + ';').then(x => {
+        setGame(x.data[0]);
+        console.log(x.data[0]);
+      }).catch(err => {
+        console.log(err.response.data)
+      }).finally(() => {
+        setLoading(false)
+      })
+    }).catch(err => {
+      console.log('err', err)
+    }).finally(_ => {
+    })
+  }, [])
+
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>Home</Text>
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome5 name="angle-left" size={24} color={colors.yellow} />
+        </TouchableOpacity>
+        <Text style={styles.title}>{name}</Text>
+      </View>
+
+      <View style={{ marginTop: 10 }}>
+        <GameContent />
+      </View>
+
     </View>
   );
+
+  function GameContent() {
+    if (loading) {
+      return <Loading />
+    }
+
+    console.log(game?.first_release_date);
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const date = new Date(game?.first_release_date * 1000);
+
+    return (
+      <View>
+        <View style={styles.mt10}>
+          <ScrollView horizontal={true}>
+            {game.screenshots.map(screenshot => {
+              return <Image
+                source={{ uri: getImgUrl('t_screenshot_med', screenshot.image_id) }}
+                style={styles.imageCover}
+              />
+            })}
+          </ScrollView>
+        </View>
+
+
+        <View style={[styles.flex, styles.mt10]}>
+          <FontAwesome5 name="calendar-alt" size={20} color={colors.red} style={{ marginRight: 10 }} />
+          <Text style={styles.text}>{months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear()}</Text>
+        </View>
+
+        <Text style={[styles.subtitle, styles.mt10]}>
+          Genres
+        </Text>
+        <View style={styles.flex}>
+          <ScrollView horizontal={true}>
+            {game.genres.map(genre => {
+              return <View style={styles.tag}>
+                <Text style={styles.text}>
+                  {genre.name}
+                </Text>
+              </View>
+            })}
+          </ScrollView>
+        </View>
+
+        <Text style={[styles.subtitle, styles.mt10]}>
+          Platforms
+        </Text>
+        <View style={styles.flex}>
+          <ScrollView horizontal={true}>
+            {game.platforms.map(plataform => {
+              return <View style={styles.tag}>
+                <Text style={styles.text}>
+                  {plataform.name}
+                </Text>
+              </View>
+            })}
+          </ScrollView>
+        </View>
+
+        <Text style={[styles.subtitle, styles.mt10]}>
+          Summary
+        </Text>
+        <Text style={[styles.text]}>
+          {game.summary}
+        </Text>
+      </View>
+
+    )
+  }
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
     margin: 10
   },
+  tag: {
+    borderColor: colors.red,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderRadius: 10,
+    margin: 2,
+    paddingHorizontal: 5,
+    paddingVertical: 2
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
   text: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 15,
+    color: '#ddd',
+    fontWeight: "500",
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: "500",
   },
   title: {
     fontSize: 24,
-    fontWeight:  "bold",
-    color: colors.yellow
+    fontWeight: "bold",
+    color: colors.yellow,
+    marginLeft: 20,
+    marginTop: -4
   },
   typing: {
     fontSize: 18,
     color: colors.yellow,
     fontWeight: "500",
+  },
+  imageCover: {
+    width: 284.5,
+    height: 160,
+    borderRadius: 10,
+    marginRight: 10,
+    elevation: 5,
+  },
+  mt10: {
+    marginTop: 10
   }
 });
