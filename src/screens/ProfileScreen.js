@@ -17,10 +17,10 @@ export default function ProfileScreen({ navigation }) {
   return (
     <View style={globalStyles.container}>
       <View style={styles.profileImageContainer}>
-        <Image source={{uri: user.picture}} style={styles.profileImage}/>
+        <Image source={{uri: user.google_data.picture}} style={styles.profileImage}/>
 
         <View>
-          <Text style={[globalStyles.title, {textAlign: 'center'}]}>{user.name}</Text>
+          <Text style={[globalStyles.title, {textAlign: 'center'}]}>{user.google_data.name}</Text>
 
           <View style={[globalStyles.flex, {justifyContent: 'space-around'}]}>
             <View>

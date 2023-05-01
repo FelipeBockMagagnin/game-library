@@ -22,8 +22,6 @@ export default function AppRoutes() {
   const Tab = createBottomTabNavigator();
   const { signed, user } = useContext(AuthContext);
 
-  console.log('dados appjs', signed, user);
-
   function HomeTabs() {
     return (
       <Tab.Navigator 
