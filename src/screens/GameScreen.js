@@ -1,13 +1,18 @@
-import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView, Button } from "react-native";
 import colors from '../styles/Colors';
 import { useState, useEffect } from "react";
 import { getToken, get, getImgUrl } from '../services/igdb'
 import Loading from "../components/Loading";
 import { FontAwesome5 } from '@expo/vector-icons';
+import AuthContext from "../contexts/auth";
+import { useContext } from "react";
+import axios from 'axios';
+import { API_URL } from '@env';
 
 export default function GameScreen({ route, navigation }) {
   const { name, id } = route.params;
 
+  const { user } = useContext(AuthContext);
   const [game, setGame] = useState({});
   const [loading, setLoading] = useState(true)
 
@@ -42,6 +47,21 @@ export default function GameScreen({ route, navigation }) {
 
     </View>
   );
+  
+  function addGame(status){
+    const data = {
+      "game_id": id,
+      "user_id": user.database_data.id,
+      "current_status": status
+    }
+
+    axios.post(API_URL + 'games', data).then(x => { 
+      console.log(x.data)
+
+    }).catch(err => {
+      console.log('error', JSON.stringify(err.response.data))
+    })
+  }
 
   function GameContent() {
     if (loading) {
@@ -108,13 +128,14 @@ export default function GameScreen({ route, navigation }) {
         <Text style={[styles.text]}>
           {game.summary}
         </Text>
-      </View>
 
+        <Button title="Game Completed" onPress={() => addGame(0)}/>
+        <Button title="Game Played" onPress={() => addGame(1)}/>
+        <Button title="Game Want" onPress={() => addGame(2)}/>
+      </View>
     )
   }
 }
-
-
 
 const styles = StyleSheet.create({
   container: {

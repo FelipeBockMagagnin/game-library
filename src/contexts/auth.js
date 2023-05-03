@@ -13,15 +13,20 @@ export const AuthProvider = ({ children }) => {
 
     async function signIn(user) {
         if (user?.error) {
+            console.log(user);
             return;
         }
 
-        axios.post(API_URL + 'user', user).then(x => { 
-            setUser(x.data);
-        }).catch(err => {
-            console.log(JSON.stringify(err))
-        })
-
+        console.log(API_URL + 'user')
+        try {
+            axios.post(API_URL + 'user', user).then(x => { 
+                setUser(x.data);
+            }).catch(err => {
+                console.log(JSON.stringify(err))
+            })
+        } catch(e) {
+            console.log(e)
+        }
     }
 
     function signOut() {
