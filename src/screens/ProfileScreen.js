@@ -4,13 +4,16 @@ import { useState, useEffect } from "react";
 import AuthContext from "../contexts/auth";
 import { useContext } from "react";
 import globalStyles from '../styles/GlobalStyles'
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 import axios from 'axios';
 import { getToken, get, getImgUrl } from '../services/igdb'
+import { useIsFocused } from '@react-navigation/native';
+
 
 export default function ProfileScreen({ navigation }) {
   const { user } = useContext(AuthContext);
-
+  const isFocused = useIsFocused();
+  
   const [gamesPlayingData, setGamesPlayingData] = useState([])
   const [gamesCompletedData, setGamesCompletedData] = useState([])
   const [gamesWantData, setGamesWantData] = useState([])
@@ -18,7 +21,7 @@ export default function ProfileScreen({ navigation }) {
   useEffect(() => {
     if (!user) return;
 
-    axios.get(API_URL + 'games/' + user.database_data.id).then(x => {
+    axios.get(REACT_APP_API_URL + 'games/' + user.database_data.id).then(x => {
       let gamesCompleted = [], gamesPlaying = [], gamesWant = [];
 
       x.data.forEach(item => {
@@ -70,7 +73,7 @@ export default function ProfileScreen({ navigation }) {
       console.log('error in api', JSON.stringify(err))
     })
 
-  }, [])
+  }, [isFocused])
 
   return (
     <ScrollView style={globalStyles.container}>
@@ -139,7 +142,7 @@ export default function ProfileScreen({ navigation }) {
       </ScrollView>
 
 
-      <Text style={[styles.title, styles.mt20]}>Want</Text>
+      <Text style={[styles.title, styles.mt20]}>Wanted</Text>
 
       <ScrollView horizontal={true} >
         {gamesWantData.map(game => {

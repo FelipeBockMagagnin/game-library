@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import axios from 'axios';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 
 const AuthContext = createContext({
     signed: false,
@@ -17,9 +17,9 @@ export const AuthProvider = ({ children }) => {
             return;
         }
 
-        console.log(API_URL + 'user')
+        console.log(REACT_APP_API_URL + 'user')
         try {
-            axios.post(API_URL + 'user', user).then(x => { 
+            axios.post(REACT_APP_API_URL + 'user', user).then(x => { 
                 setUser(x.data);
             }).catch(err => {
                 console.log(JSON.stringify(err))

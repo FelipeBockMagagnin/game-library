@@ -7,14 +7,15 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import AuthContext from "../contexts/auth";
 import { useContext } from "react";
 import axios from 'axios';
-import { API_URL } from '@env';
+import { REACT_APP_API_URL } from '@env';
 
 export default function GameScreen({ route, navigation }) {
   const { name, id } = route.params;
 
   const { user } = useContext(AuthContext);
   const [game, setGame] = useState({});
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [gameCurrentStatus, setGameCurrentStatus] = useState(null)
 
   useEffect(() => {
     getToken().then(data => {
@@ -33,7 +34,7 @@ export default function GameScreen({ route, navigation }) {
   }, [])
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={{ display: 'flex', flexDirection: 'row' }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <FontAwesome5 name="angle-left" size={24} color={colors.yellow} />
@@ -45,20 +46,34 @@ export default function GameScreen({ route, navigation }) {
         <GameContent />
       </View>
 
-    </View>
+    </ScrollView>
   );
-  
-  function addGame(status){
+
+  function addGame(status) {
     const data = {
       "game_id": id,
       "user_id": user.database_data.id,
       "current_status": status
     }
 
-    axios.post(API_URL + 'games', data).then(x => { 
+    axios.post(REACT_APP_API_URL + 'games', data).then(x => {
       console.log(x.data)
+      let gameTextStatus = "";
+      switch (status) {
+        case 0:
+          gameTextStatus = "Completed"
+          break;
+        case 1:
+          gameTextStatus = "Playing"
+          break;
+        case 2:
+          gameTextStatus = "Wanted"
+          break;
+      }
 
+      setGameCurrentStatus(gameTextStatus);
     }).catch(err => {
+      alert(err.response.data)
       console.log('error', JSON.stringify(err.response.data))
     })
   }
@@ -129,9 +144,14 @@ export default function GameScreen({ route, navigation }) {
           {game.summary}
         </Text>
 
-        <Button title="Game Completed" onPress={() => addGame(0)}/>
-        <Button title="Game Played" onPress={() => addGame(1)}/>
-        <Button title="Game Want" onPress={() => addGame(2)}/>
+        {gameCurrentStatus == null ? <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+          <Button title="Game Completed" onPress={() => addGame(0)} />
+          <Button title="Game Played" onPress={() => addGame(1)} />
+          <Button title="Game Wanted" onPress={() => addGame(2)} />
+        </View> : <View>
+          <Text style={styles.text}>Game {gameCurrentStatus}</Text>
+          <Button title="Remove Game" onPress={() => removeGame()} />
+        </View>}
       </View>
     )
   }
