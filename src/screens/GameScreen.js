@@ -18,10 +18,18 @@ export default function GameScreen({ route, navigation }) {
   const [gameCurrentStatus, setGameCurrentStatus] = useState(null)
 
   useEffect(() => {
+    axios.get(REACT_APP_API_URL + 'games/' + user.database_data.id + '/' + id).then(x => {
+      if(x.data.length > 0) {
+        setGameCurrentStatus(x.data[0].current_status);
+      }
+    }).catch(err => {
+      console.log('error', JSON.stringify(err.response.data))
+      alert(err)
+    })
+
     getToken().then(data => {
       get(data.data.access_token, 'games', "fields *, screenshots.image_id, platforms.name, genres.name; where id = " + id + ';').then(x => {
         setGame(x.data[0]);
-        console.log(x.data[0]);
       }).catch(err => {
         console.log(err.response.data)
       }).finally(() => {
@@ -55,27 +63,47 @@ export default function GameScreen({ route, navigation }) {
       "user_id": user.database_data.id,
       "current_status": status
     }
+    console.log('add Game', status)
 
     axios.post(REACT_APP_API_URL + 'games', data).then(x => {
-      console.log(x.data)
-      let gameTextStatus = "";
-      switch (status) {
-        case 0:
-          gameTextStatus = "Completed"
-          break;
-        case 1:
-          gameTextStatus = "Playing"
-          break;
-        case 2:
-          gameTextStatus = "Wanted"
-          break;
-      }
+      console.log(x)
+      setGameCurrentStatus(status);
+    }).catch(err => {
+      console.log('error', JSON.stringify(err.response.data))
+      alert(err.response.data)
+    })
+  }
 
-      setGameCurrentStatus(gameTextStatus);
+  function removeGame() {
+    const data = {
+      "game_id": id,
+      "user_id": user.database_data.id,
+    }
+
+    axios.post(REACT_APP_API_URL + 'games/delete', data).then(x => {
+      setGameCurrentStatus(null);
     }).catch(err => {
       alert(err.response.data)
       console.log('error', JSON.stringify(err.response.data))
     })
+  }
+
+  function gameStatusText(status) {
+    let gameTextStatus = "";
+
+    switch (status) {
+      case 0:
+        gameTextStatus = "Completed"
+        break;
+      case 1:
+        gameTextStatus = "Playing"
+        break;
+      case 2:
+        gameTextStatus = "Wanted"
+        break;
+    }
+
+    return gameTextStatus;
   }
 
   function GameContent() {
@@ -83,7 +111,6 @@ export default function GameScreen({ route, navigation }) {
       return <Loading />
     }
 
-    console.log(game?.first_release_date);
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const date = new Date(game?.first_release_date * 1000);
 
@@ -149,7 +176,7 @@ export default function GameScreen({ route, navigation }) {
           <Button title="Game Played" onPress={() => addGame(1)} />
           <Button title="Game Wanted" onPress={() => addGame(2)} />
         </View> : <View>
-          <Text style={styles.text}>Game {gameCurrentStatus}</Text>
+          <Text style={[styles.text, styles.mt10, { textAlign: 'center' }]}>Game {gameStatusText(gameCurrentStatus)}</Text>
           <Button title="Remove Game" onPress={() => removeGame()} />
         </View>}
       </View>
