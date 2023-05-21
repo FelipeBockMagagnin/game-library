@@ -7,7 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import AuthContext from "../contexts/auth";
 import { useContext } from "react";
 import axios from 'axios';
-import { REACT_APP_API_URL } from '@env';
+import { REACT_APP_API_URL } from '../../env';
 
 export default function GameScreen({ route, navigation }) {
   const { name, id } = route.params;

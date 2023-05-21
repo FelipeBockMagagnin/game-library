@@ -5,7 +5,8 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "ca": "cd android && ./gradlew clean && ./gradlew --stop &&  npm cache clean --force &&  cd .. && npm start --reset-cache"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.7",

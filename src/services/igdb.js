@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IGDB_KEY, IGDB_SECRET_KEY } from '@env';
+import { IGDB_KEY, IGDB_SECRET_KEY } from '../../env';
 
 const API = 'https://api.igdb.com/v4/'
 function createAxiosInstance(token) {

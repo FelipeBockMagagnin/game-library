@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import axios from 'axios';
-import { REACT_APP_API_URL } from '@env';
+import { REACT_APP_API_URL } from '../../env';
 
 const AuthContext = createContext({
     signed: false,

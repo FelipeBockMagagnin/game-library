@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import AuthContext from "../contexts/auth";
 import { useContext } from "react";
 import globalStyles from '../styles/GlobalStyles'
-import { REACT_APP_API_URL } from '@env';
+import { REACT_APP_API_URL } from '../../env';
 import axios from 'axios';
 import { getToken, get, getImgUrl } from '../services/igdb'
 import { useIsFocused } from '@react-navigation/native';
