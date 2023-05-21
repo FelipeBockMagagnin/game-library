@@ -19,7 +19,7 @@ export default function GameScreen({ route, navigation }) {
 
   useEffect(() => {
     axios.get(REACT_APP_API_URL + 'games/' + user.database_data.id + '/' + id).then(x => {
-      if(x.data.length > 0) {
+      if (x.data.length > 0) {
         setGameCurrentStatus(x.data[0].current_status);
       }
     }).catch(err => {
@@ -27,17 +27,16 @@ export default function GameScreen({ route, navigation }) {
       alert(err)
     })
 
-    getToken().then(data => {
-      get(data.data.access_token, 'games', "fields *, screenshots.image_id, platforms.name, genres.name; where id = " + id + ';').then(x => {
-        setGame(x.data[0]);
-      }).catch(err => {
-        console.log(err.response.data)
-      }).finally(() => {
-        setLoading(false)
-      })
+    get(
+      'games', 
+      "*, screenshots.image_id, platforms.name, genres.name",
+      "id = " + id
+    ).then(x => {
+      setGame(x.data[0]);
     }).catch(err => {
-      console.log('err', err)
-    }).finally(_ => {
+      console.log(err.response.data)
+    }).finally(() => {
+      setLoading(false)
     })
   }, [])
 
@@ -47,7 +46,7 @@ export default function GameScreen({ route, navigation }) {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <FontAwesome5 name="angle-left" size={24} color={colors.yellow} />
         </TouchableOpacity>
-        <Text style={[styles.title, {marginLeft: 20, marginTop: -4}]}>{name}</Text>
+        <Text style={[styles.title, { marginLeft: 20, marginTop: -4 }]}>{name}</Text>
       </View>
 
       <View style={{ marginTop: 10 }}>
@@ -172,30 +171,30 @@ export default function GameScreen({ route, navigation }) {
         </Text>
 
         {gameCurrentStatus == null ? <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: 20 }}>
-          <Text style={[styles.title, { textAlign: 'center'}]}>Add to</Text>
+          <Text style={[styles.title, { textAlign: 'center' }]}>Add to</Text>
           <TouchableOpacity style={styles.button} onPress={() => addGame(0)} >
             <Text style={styles.buttonText}>Completed</Text>
-            <Text style={{textAlign: "center", color: colors.dark_green}}>Finished Games</Text>
+            <Text style={{ textAlign: "center", color: colors.dark_green }}>Finished Games</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={() => addGame(1)} >
             <Text style={styles.buttonText}>Playing</Text>
-            <Text style={{textAlign: "center", color: colors.dark_green}}>Currently Playing</Text>
+            <Text style={{ textAlign: "center", color: colors.dark_green }}>Currently Playing</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={() => addGame(2)} >
             <Text style={styles.buttonText}>Want</Text>
-            <Text style={{textAlign: "center", color: colors.dark_green}}>Wanted games</Text>
+            <Text style={{ textAlign: "center", color: colors.dark_green }}>Wanted games</Text>
           </TouchableOpacity>
         </View> : <View>
           <Text style={[styles.text, styles.mt20, styles.title, { textAlign: 'center' }]}>Status: {gameStatusText(gameCurrentStatus)}</Text>
           <TouchableOpacity style={styles.button} onPress={() => removeGame()} >
             <Text style={styles.buttonText}>Remove</Text>
-            <Text style={{textAlign: "center", color: colors.dark_green}}>Remove from your library</Text>
+            <Text style={{ textAlign: "center", color: colors.dark_green }}>Remove from your library</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => changeStatus()}>
             <Text style={styles.buttonText}>Change Status</Text>
-            <Text style={{textAlign: "center", color: colors.dark_green}}>Update game status</Text>
+            <Text style={{ textAlign: "center", color: colors.dark_green }}>Update game status</Text>
           </TouchableOpacity>
         </View>}
       </View>
@@ -208,9 +207,9 @@ const styles = StyleSheet.create({
     margin: 10
   },
   buttonText: {
-    color: colors.dark_green, 
-    fontWeight: "700", 
-    fontSize: 20, 
+    color: colors.dark_green,
+    fontWeight: "700",
+    fontSize: 20,
     textAlign: "center"
   },
   button: {

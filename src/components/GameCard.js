@@ -1,8 +1,11 @@
 import { TouchableOpacity, Image, StyleSheet } from "react-native";
 import colors from '../styles/Colors';
 import { getImgUrl } from '../services/igdb'
+import { useNavigation } from '@react-navigation/native';
 
 export default function GameCard({id, url, game}) {
+  const navigation = useNavigation();
+
   return (
     <TouchableOpacity key={id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
     {url

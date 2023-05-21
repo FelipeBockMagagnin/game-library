@@ -14,7 +14,7 @@ import GameCard from "../components/GameCard";
 export default function ProfileScreen({ navigation }) {
   const { user } = useContext(AuthContext);
   const isFocused = useIsFocused();
-  
+
   const [gamesPlayingData, setGamesPlayingData] = useState([])
   const [gamesCompletedData, setGamesCompletedData] = useState([])
   const [gamesWantData, setGamesWantData] = useState([])
@@ -39,36 +39,50 @@ export default function ProfileScreen({ navigation }) {
         }
       });
 
-      getToken().then(data => {
-        if (gamesPlaying.length > 0) {
-          const gamesIdString = '(' + (gamesPlaying.length > 0 ? gamesPlaying.join(',') : gamesPlaying) + ')';
-          get(data.data.access_token, 'games', "fields cover.url, cover.image_id,name,rating,rating_count, hypes;sort rating_count desc;limit 500;where id = " + gamesIdString + ";").then(x => {
-            setGamesPlayingData(x.data)
-          }).catch(err => {
-            console.log(err.response.data)
-          })
-        }
+      if (gamesPlaying.length > 0) {
+        const gamesIdString = '(' + (gamesPlaying.length > 0 ? gamesPlaying.join(',') : gamesPlaying) + ')';
+        get(
+          'games', 
+          "cover.url, cover.image_id,name,rating,rating_count, hypes",
+          "id = " + gamesIdString,
+          "rating_count desc",
+          "500",
+        ).then(x => {
+          setGamesPlayingData(x.data)
+        }).catch(err => {
+          console.log(err.response.data)
+        })
+      }
 
-        if (gamesCompleted.length > 0) {
-          const gamesCompletedIdString = '(' + (gamesCompleted.length > 0 ? gamesCompleted.join(',') : gamesCompleted) + ')';
-          get(data.data.access_token, 'games', "fields cover.url, cover.image_id,name,rating,rating_count, hypes;sort rating_count desc;limit 500;where id = " + gamesCompletedIdString + ";").then(x => {
-            setGamesCompletedData(x.data)
-          }).catch(err => {
-            console.log(err.response.data)
-          })
-        }
+      if (gamesCompleted.length > 0) {
+        const gamesCompletedIdString = '(' + (gamesCompleted.length > 0 ? gamesCompleted.join(',') : gamesCompleted) + ')';
+        get(
+          'games', 
+          "cover.url, cover.image_id,name,rating,rating_count, hypes",
+          "id = " + gamesCompletedIdString,
+          "rating_count desc",
+          "500",
+        ).then(x => {
+          setGamesCompletedData(x.data)
+        }).catch(err => {
+          console.log(err.response.data)
+        })
+      }
 
-        if (gamesWant.length > 0) {
-          const gamesWantIdString = '(' + (gamesWant.length > 0 ? gamesWant.join(',') : gamesWant) + ')';
-          get(data.data.access_token, 'games', "fields cover.url, cover.image_id,name,rating,rating_count, hypes;sort rating_count desc;limit 500;where id = " + gamesWantIdString + ";").then(x => {
-            setGamesWantData(x.data)
-          }).catch(err => {
-            console.log(err.response.data)
-          })
-        }
-      }).catch(err => {
-        console.log('err', err)
-      })
+      if (gamesWant.length > 0) {
+        const gamesWantIdString = '(' + (gamesWant.length > 0 ? gamesWant.join(',') : gamesWant) + ')';
+        get(
+          'games', 
+          "cover.url, cover.image_id,name,rating,rating_count, hypes",
+          "id = " + gamesWantIdString + ";",
+          "rating_count desc",
+          "500"
+        ).then(x => {
+          setGamesWantData(x.data)
+        }).catch(err => {
+          console.log(err.response.data)
+        })
+      }
 
     }).catch(err => {
       console.log('error in api', JSON.stringify(err))
@@ -111,20 +125,20 @@ export default function ProfileScreen({ navigation }) {
       <Text style={[styles.title, styles.mt20]}>Completed</Text>
 
       <ScrollView horizontal={true} >
-        {gamesCompletedData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
+        {gamesCompletedData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
       </ScrollView>
 
       <Text style={[styles.title, styles.mt20]}>Playing</Text>
 
       <ScrollView horizontal={true} >
-        {gamesPlayingData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
+        {gamesPlayingData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
       </ScrollView>
 
 
       <Text style={[styles.title, styles.mt20]}>Wanted</Text>
 
       <ScrollView horizontal={true} >
-        {gamesWantData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
+        {gamesWantData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
       </ScrollView>
     </ScrollView>
   );
