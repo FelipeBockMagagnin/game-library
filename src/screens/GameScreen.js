@@ -47,7 +47,7 @@ export default function GameScreen({ route, navigation }) {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <FontAwesome5 name="angle-left" size={24} color={colors.yellow} />
         </TouchableOpacity>
-        <Text style={styles.title}>{name}</Text>
+        <Text style={[styles.title, {marginLeft: 20, marginTop: -4}]}>{name}</Text>
       </View>
 
       <View style={{ marginTop: 10 }}>
@@ -99,7 +99,7 @@ export default function GameScreen({ route, navigation }) {
         gameTextStatus = "Playing"
         break;
       case 2:
-        gameTextStatus = "Wanted"
+        gameTextStatus = "Want"
         break;
     }
 
@@ -115,8 +115,8 @@ export default function GameScreen({ route, navigation }) {
     const date = new Date(game?.first_release_date * 1000);
 
     return (
-      <View>
-        <View style={styles.mt10}>
+      <View style={styles.pb50}>
+        <View style={[styles.mt10]}>
           <ScrollView horizontal={true}>
             {game.screenshots?.map((screenshot, index) => {
               return <Image
@@ -171,13 +171,32 @@ export default function GameScreen({ route, navigation }) {
           {game.summary}
         </Text>
 
-        {gameCurrentStatus == null ? <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-          <Button title="Game Completed" onPress={() => addGame(0)} />
-          <Button title="Game Played" onPress={() => addGame(1)} />
-          <Button title="Game Wanted" onPress={() => addGame(2)} />
+        {gameCurrentStatus == null ? <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: 20 }}>
+          <Text style={[styles.title, { textAlign: 'center'}]}>Add to</Text>
+          <TouchableOpacity style={styles.button} onPress={() => addGame(0)} >
+            <Text style={styles.buttonText}>Completed</Text>
+            <Text style={{textAlign: "center", color: colors.dark_green}}>Finished Games</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => addGame(1)} >
+            <Text style={styles.buttonText}>Playing</Text>
+            <Text style={{textAlign: "center", color: colors.dark_green}}>Currently Playing</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => addGame(2)} >
+            <Text style={styles.buttonText}>Want</Text>
+            <Text style={{textAlign: "center", color: colors.dark_green}}>Wanted games</Text>
+          </TouchableOpacity>
         </View> : <View>
-          <Text style={[styles.text, styles.mt10, { textAlign: 'center' }]}>Game {gameStatusText(gameCurrentStatus)}</Text>
-          <Button title="Remove Game" onPress={() => removeGame()} />
+          <Text style={[styles.text, styles.mt20, styles.title, { textAlign: 'center' }]}>Status: {gameStatusText(gameCurrentStatus)}</Text>
+          <TouchableOpacity style={styles.button} onPress={() => removeGame()} >
+            <Text style={styles.buttonText}>Remove</Text>
+            <Text style={{textAlign: "center", color: colors.dark_green}}>Remove from your library</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => changeStatus()}>
+            <Text style={styles.buttonText}>Change Status</Text>
+            <Text style={{textAlign: "center", color: colors.dark_green}}>Update game status</Text>
+          </TouchableOpacity>
         </View>}
       </View>
     )
@@ -187,6 +206,20 @@ export default function GameScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     margin: 10
+  },
+  buttonText: {
+    color: colors.dark_green, 
+    fontWeight: "700", 
+    fontSize: 20, 
+    textAlign: "center"
+  },
+  button: {
+    width: '100%',
+    backgroundColor: colors.yellow,
+    borderRadius: 20,
+    padding: 10,
+    color: '#FFF',
+    marginTop: 10
   },
   tag: {
     borderColor: colors.red,
@@ -215,8 +248,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: colors.yellow,
-    marginLeft: 20,
-    marginTop: -4
   },
   typing: {
     fontSize: 18,
@@ -232,5 +263,11 @@ const styles = StyleSheet.create({
   },
   mt10: {
     marginTop: 10
+  },
+  mt20: {
+    marginTop: 20
+  },
+  pb50: {
+    marginBottom: 50
   }
 });
