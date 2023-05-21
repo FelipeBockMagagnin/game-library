@@ -1,8 +1,9 @@
-import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import colors from '../styles/Colors';
 import { useEffect, useState } from "react";
-import { getToken, get, getImgUrl } from '../services/igdb'
+import { getToken, get } from '../services/igdb'
 import Loading from "../components/Loading";
+import GameCard from "../components/GameCard";
 
 export default function Home({ navigation }) {
   const [games, setGames] = useState([])
@@ -49,58 +50,21 @@ export default function Home({ navigation }) {
         <Text style={[styles.title]}>Popular</Text>
 
         <ScrollView horizontal={true} >
-          {games.map(game => {
-            return (
-              <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
-                {game?.cover?.url
-                  ? <Image
-                    source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
-                    style={styles.imageCover}
-                  />
-                  : ''}
-              </TouchableOpacity >
-
-            )
-          })}
+          {games.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
         </ScrollView>
 
         <Text style={[styles.title, styles.mt20]}>Recent</Text>
 
         <ScrollView horizontal={true} >
-          {recentGames.map(game => {
-            return (
-              <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
-                {game?.cover?.url
-                  ? <Image
-                    source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
-                    style={styles.imageCover}
-                  />
-                  : ''}
-              </TouchableOpacity >
-
-            )
-          })}
+          {recentGames.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
         </ScrollView>
 
         <Text style={[styles.title, styles.mt20]}>Upcoming</Text>
 
         <ScrollView horizontal={true} >
-          {upcomingGames.map(game => {
-            return (
-              <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
-                {game?.cover?.url
-                  ? <Image
-                    source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
-                    style={styles.imageCover}
-                  />
-                  : ''}
-              </TouchableOpacity >
-
-            )
-          })}
+          {upcomingGames.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
         </ScrollView>
       </ScrollView>
-
     </View>
   );
 }
@@ -120,13 +84,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: colors.yellow
-  },
-  imageCover: {
-    width: 132,
-    height: 187,
-    borderRadius: 10,
-    marginRight: 10,
-    elevation: 5,
   },
   gameList: {
     display: 'flex',

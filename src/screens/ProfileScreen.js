@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Image, ScrollView } from "react-native";
 import colors from '../styles/Colors';
 import { useState, useEffect } from "react";
 import AuthContext from "../contexts/auth";
@@ -6,8 +6,9 @@ import { useContext } from "react";
 import globalStyles from '../styles/GlobalStyles'
 import { REACT_APP_API_URL } from '../../env';
 import axios from 'axios';
-import { getToken, get, getImgUrl } from '../services/igdb'
+import { getToken, get } from '../services/igdb'
 import { useIsFocused } from '@react-navigation/native';
+import GameCard from "../components/GameCard";
 
 
 export default function ProfileScreen({ navigation }) {
@@ -110,53 +111,20 @@ export default function ProfileScreen({ navigation }) {
       <Text style={[styles.title, styles.mt20]}>Completed</Text>
 
       <ScrollView horizontal={true} >
-        {gamesCompletedData.map(game => {
-          return (
-            <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
-              {game?.cover?.url
-                ? <Image
-                  source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
-                  style={styles.imageCover}
-                />
-                : ''}
-            </TouchableOpacity >
-          )
-        })}
+        {gamesCompletedData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
       </ScrollView>
 
       <Text style={[styles.title, styles.mt20]}>Playing</Text>
 
       <ScrollView horizontal={true} >
-        {gamesPlayingData.map(game => {
-          return (
-            <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
-              {game?.cover?.url
-                ? <Image
-                  source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
-                  style={styles.imageCover}
-                />
-                : ''}
-            </TouchableOpacity >
-          )
-        })}
+        {gamesPlayingData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
       </ScrollView>
 
 
       <Text style={[styles.title, styles.mt20]}>Wanted</Text>
 
       <ScrollView horizontal={true} >
-        {gamesWantData.map(game => {
-          return (
-            <TouchableOpacity key={game.id} onPress={() => navigation.navigate('Game', { id: game.id, name: game.name })} >
-              {game?.cover?.url
-                ? <Image
-                  source={{ uri: getImgUrl('t_cover_big', game.cover.image_id) }}
-                  style={styles.imageCover}
-                />
-                : ''}
-            </TouchableOpacity >
-          )
-        })}
+        {gamesWantData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} /> )}
       </ScrollView>
     </ScrollView>
   );
@@ -189,13 +157,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: colors.yellow
-  },
-  imageCover: {
-    width: 132,
-    height: 187,
-    borderRadius: 10,
-    marginRight: 10,
-    elevation: 5,
   },
   gameList: {
     display: 'flex',
