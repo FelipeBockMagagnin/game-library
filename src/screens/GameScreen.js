@@ -1,17 +1,14 @@
-import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
-import colors from '../styles/Colors';
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useState, useEffect } from "react";
-import { get, getImgUrl } from '../services/igdb'
+import { get } from '../services/igdb'
 import Loading from "../components/Loading";
-import { FontAwesome5 } from '@expo/vector-icons';
 import AuthContext from "../contexts/auth";
 import { useContext } from "react";
 import axios from 'axios';
 import { REACT_APP_API_URL } from '../../env';
-import PrimaryButton from "../components/PrimaryButton";
-import PrimaryTitle from "../components/PrimaryTitle";
+import { PrimaryButton } from "../components/Button";
 import { PrimaryIcon, SecondaryIcon } from "../components/Icon";
-import { TextSubtitle, TextWhite } from "../components/Text";
+import { TextSubtitle, TextWhite, PrimaryTitle } from "../components/Text";
 import { ImageCover } from "../components/Image";
 import { TagSecondary } from "../components/Tag";
 

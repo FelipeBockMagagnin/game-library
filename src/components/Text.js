@@ -1,4 +1,5 @@
 import { Text, StyleSheet } from "react-native";
+import colors from '../styles/Colors';
 
 function TextWhite({ children, style }) {
     return (
@@ -16,13 +17,24 @@ function TextSubtitle({ children, style }) {
     )
 }
 
-export { TextWhite, TextSubtitle }
+function PrimaryTitle({ style, children }) {
+    return (
+        <Text style={[styles.title, style]}>{children}</Text>
+    );
+}
+
+export { TextWhite, TextSubtitle, PrimaryTitle }
 
 const styles = StyleSheet.create({
     text: {
         fontSize: 15,
         color: '#ddd',
         fontWeight: "500",
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+        color: colors.yellow,
     },
     subtitle: {
         fontSize: 18,

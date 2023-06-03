@@ -1,7 +1,7 @@
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import colors from '../styles/Colors';
 
-export default function PrimaryButton({ onPress, title, description }) {
+function PrimaryButton({ onPress, title, description }) {
     return (
         <TouchableOpacity style={styles.button} onPress={onPress} >
             <Text style={styles.buttonText}>
@@ -13,6 +13,8 @@ export default function PrimaryButton({ onPress, title, description }) {
         </TouchableOpacity>
     )
 }
+
+export { PrimaryButton }
 
 const styles = StyleSheet.create({
     buttonText: {
