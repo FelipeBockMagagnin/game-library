@@ -172,7 +172,6 @@ export default function GameScreen({ route, navigation }) {
         </View> : <View style={styles.mt20}>
           <PrimaryTitle style={{ textAlign: 'center' }}>Status: {gameStatusText(gameCurrentStatus)}</PrimaryTitle>
           <PrimaryButton onPress={() => removeGame()} title='Remove' description='Remove from your library' />
-          <PrimaryButton onPress={() => removeGame()} title='Change Status' description='Update game status' />
         </View>}
       </View>
     )
