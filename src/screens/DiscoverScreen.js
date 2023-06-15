@@ -15,7 +15,7 @@ export default function Discover({ navigation }) {
       "cover.url, cover.image_id,name,rating,rating_count, hypes",
       "rating_count > 1000",
       "rating_count desc",
-      "50",
+      "10",
     ).then(x => {
       //console.log(x.data);
 
@@ -32,7 +32,7 @@ export default function Discover({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Discover</Text>
+      <Text style={styles.title}>Top 10 games of all time</Text>
 
       <ScrollView horizontal={true} >
         {games.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}

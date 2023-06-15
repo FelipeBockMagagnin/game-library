@@ -31,11 +31,13 @@ export default function GameScreen({ route, navigation }) {
     })
 
     get(
-      'games', 
+      'games',
       "*, screenshots.image_id, platforms.name, genres.name",
       "id = " + id
     ).then(x => {
       setGame(x.data[0]);
+      console.log(x.data[0])
+
     }).catch(err => {
       console.log(err.response.data)
     }).finally(() => {
@@ -46,7 +48,7 @@ export default function GameScreen({ route, navigation }) {
   return (
     <ScrollView style={styles.container}>
       <View style={{ display: 'flex', flexDirection: 'row' }}>
-        <PrimaryIcon name="angle-left" onPress={() => navigation.goBack()}/>
+        <PrimaryIcon name="angle-left" onPress={() => navigation.goBack()} />
         <PrimaryTitle style={{ marginLeft: 10, marginTop: -4 }}>{name}</PrimaryTitle>
       </View>
 
@@ -116,7 +118,7 @@ export default function GameScreen({ route, navigation }) {
         <View style={[styles.mt10]}>
           <ScrollView horizontal={true}>
             {game.screenshots?.map((screenshot, index) => {
-              return <ImageCover image_id={screenshot.image_id}/>
+              return <ImageCover image_id={screenshot.image_id} />
             })}
           </ScrollView>
         </View>
@@ -127,18 +129,21 @@ export default function GameScreen({ route, navigation }) {
             {months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear()}
           </TextWhite>
         </View>
-        
-        <TextSubtitle style={styles.mt10}>
-          Genres
-        </TextSubtitle>
 
-        <View style={styles.flex}>
-          <ScrollView horizontal={true}>
-            {game.genres?.map((genre, index) => {
-              return <TagSecondary>{genre.name}</TagSecondary>
-            })}
-          </ScrollView>
-        </View>
+        {game.genres ?
+          <>
+            <TextSubtitle style={styles.mt10}>
+              Genres
+            </TextSubtitle>
+
+            <View style={styles.flex}>
+              <ScrollView horizontal={true}>
+                {game.genres?.map((genre, index) => {
+                  return <TagSecondary>{genre.name}</TagSecondary>
+                })}
+              </ScrollView>
+            </View>
+          </> : ''}
 
         <TextSubtitle style={styles.mt10}>
           Platforms
@@ -161,13 +166,13 @@ export default function GameScreen({ route, navigation }) {
 
         {gameCurrentStatus == null ? <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginTop: 20 }}>
           <PrimaryTitle style={{ textAlign: 'center' }}>Add to</PrimaryTitle>
-          <PrimaryButton onPress={() => addGame(0)} title='Completed' description='Finished Games'/>
-          <PrimaryButton onPress={() => addGame(1)} title='Playing' description='Currently Playing'/>
-          <PrimaryButton onPress={() => addGame(2)} title='Want' description='Wanted games'/>
+          <PrimaryButton onPress={() => addGame(0)} title='Completed' description='Finished Games' />
+          <PrimaryButton onPress={() => addGame(1)} title='Playing' description='Currently Playing' />
+          <PrimaryButton onPress={() => addGame(2)} title='Want' description='Wanted games' />
         </View> : <View style={styles.mt20}>
           <PrimaryTitle style={{ textAlign: 'center' }}>Status: {gameStatusText(gameCurrentStatus)}</PrimaryTitle>
-          <PrimaryButton onPress={() => removeGame()} title='Remove' description='Remove from your library'/>
-          <PrimaryButton onPress={() => removeGame()} title='Change Status' description='Update game status'/>
+          <PrimaryButton onPress={() => removeGame()} title='Remove' description='Remove from your library' />
+          <PrimaryButton onPress={() => removeGame()} title='Change Status' description='Update game status' />
         </View>}
       </View>
     )
