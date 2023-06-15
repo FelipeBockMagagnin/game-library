@@ -9,6 +9,7 @@ import axios from 'axios';
 import { getToken, get } from '../services/igdb'
 import { useIsFocused } from '@react-navigation/native';
 import GameCard from "../components/GameCard";
+import { PrimaryTitle, TextWhite } from "../components/Text";
 
 
 export default function ProfileScreen({ navigation }) {
@@ -42,7 +43,7 @@ export default function ProfileScreen({ navigation }) {
       if (gamesPlaying.length > 0) {
         const gamesIdString = '(' + (gamesPlaying.length > 0 ? gamesPlaying.join(',') : gamesPlaying) + ')';
         get(
-          'games', 
+          'games',
           "cover.url, cover.image_id,name,rating,rating_count, hypes",
           "id = " + gamesIdString,
           "rating_count desc",
@@ -57,7 +58,7 @@ export default function ProfileScreen({ navigation }) {
       if (gamesCompleted.length > 0) {
         const gamesCompletedIdString = '(' + (gamesCompleted.length > 0 ? gamesCompleted.join(',') : gamesCompleted) + ')';
         get(
-          'games', 
+          'games',
           "cover.url, cover.image_id,name,rating,rating_count, hypes",
           "id = " + gamesCompletedIdString,
           "rating_count desc",
@@ -72,7 +73,7 @@ export default function ProfileScreen({ navigation }) {
       if (gamesWant.length > 0) {
         const gamesWantIdString = '(' + (gamesWant.length > 0 ? gamesWant.join(',') : gamesWant) + ')';
         get(
-          'games', 
+          'games',
           "cover.url, cover.image_id,name,rating,rating_count, hypes",
           "id = " + gamesWantIdString + ";",
           "rating_count desc",
@@ -96,50 +97,85 @@ export default function ProfileScreen({ navigation }) {
         <Image source={{ uri: user.google_data.picture }} style={styles.profileImage} />
 
         <View>
-          <Text style={[globalStyles.title, { textAlign: 'center' }]}>{user.google_data.name}</Text>
+          <PrimaryTitle style={{ textAlign: 'center' }}>{user.google_data.name}</PrimaryTitle>
 
           <View style={[globalStyles.flex, { justifyContent: 'space-around' }]}>
             <View>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>{gamesPlayingData.length + gamesCompletedData.length + gamesWantData.length}</Text>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>Games</Text>
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                {gamesPlayingData.length + gamesCompletedData.length + gamesWantData.length}
+              </TextWhite>
+
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                Games
+              </TextWhite>
             </View>
 
             <View>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>{gamesCompletedData.length}</Text>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>Completed</Text>
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                {gamesCompletedData.length}
+              </TextWhite>
+
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                Completed
+              </TextWhite>
             </View>
 
             <View>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>{gamesPlayingData.length}</Text>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>Playing</Text>
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                {gamesPlayingData.length}
+              </TextWhite>
+
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                Playing
+              </TextWhite>
             </View>
 
             <View>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>{gamesWantData.length}</Text>
-              <Text style={[globalStyles.text, { marginRight: 10, textAlign: 'center' }]}>Want</Text>
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                {gamesWantData.length}
+              </TextWhite>
+
+              <TextWhite style={{ marginRight: 10, textAlign: 'center' }}>
+                Want
+              </TextWhite>
             </View>
           </View>
         </View>
       </View>
 
-      <Text style={[styles.title, styles.mt20]}>Completed</Text>
+      {
+        gamesCompletedData.length > 0 ? (
+          <>
+            <PrimaryTitle style={styles.mt20}>Completed</PrimaryTitle>
 
-      <ScrollView horizontal={true} >
-        {gamesCompletedData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
-      </ScrollView>
+            <ScrollView horizontal={true} >
+              {gamesCompletedData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+            </ScrollView>
+          </>) : ''
+      }
 
-      <Text style={[styles.title, styles.mt20]}>Playing</Text>
+      {
+        gamesPlayingData.length > 0 ? (
+          <>
+            <PrimaryTitle style={styles.mt20}>Playing</PrimaryTitle>
 
-      <ScrollView horizontal={true} >
-        {gamesPlayingData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
-      </ScrollView>
+            <ScrollView horizontal={true} >
+              {gamesPlayingData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+            </ScrollView>
+          </>) : ''
+      }
 
+      {
+        gamesWantData.length > 0 ? (
+          <>
+            <PrimaryTitle style={styles.mt20}>Wanted</PrimaryTitle>
 
-      <Text style={[styles.title, styles.mt20]}>Wanted</Text>
+            <ScrollView horizontal={true} >
+              {gamesWantData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+            </ScrollView>
+          </>) : ''
+      }
 
-      <ScrollView horizontal={true} >
-        {gamesWantData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
-      </ScrollView>
     </ScrollView>
   );
 }
@@ -162,15 +198,6 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.yellow
   },
   gameList: {
     display: 'flex',

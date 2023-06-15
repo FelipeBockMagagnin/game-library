@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { get } from '../services/igdb'
 import Loading from "../components/Loading";
 import GameCard from "../components/GameCard";
+import { PrimaryTitle } from "../components/Text";
 
 export default function Home({ navigation }) {
   const [games, setGames] = useState([])
@@ -61,19 +62,20 @@ export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={[styles.title]}>Popular</Text>
+        <PrimaryTitle>Popular</PrimaryTitle>
 
         <ScrollView horizontal={true} >
           {games.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
         </ScrollView>
 
-        <Text style={[styles.title, styles.mt20]}>Recent</Text>
+        <PrimaryTitle style={styles.mt20}>Recent</PrimaryTitle>
 
         <ScrollView horizontal={true} >
           {recentGames.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
         </ScrollView>
 
-        <Text style={[styles.title, styles.mt20]}>Upcoming</Text>
+
+        <PrimaryTitle style={styles.mt20}>Upcoming</PrimaryTitle>
 
         <ScrollView horizontal={true} >
           {upcomingGames.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
@@ -89,15 +91,6 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.yellow
   },
   gameList: {
     display: 'flex',
