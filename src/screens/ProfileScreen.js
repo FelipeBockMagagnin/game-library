@@ -149,7 +149,7 @@ export default function ProfileScreen({ navigation }) {
             <PrimaryTitle style={styles.mt20}>Completed</PrimaryTitle>
 
             <ScrollView horizontal={true} >
-              {gamesCompletedData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+              {gamesCompletedData.map(game => <GameCard url={game?.cover?.url} key={game.id} game={game} />)}
             </ScrollView>
           </>) : ''
       }
@@ -160,7 +160,7 @@ export default function ProfileScreen({ navigation }) {
             <PrimaryTitle style={styles.mt20}>Playing</PrimaryTitle>
 
             <ScrollView horizontal={true} >
-              {gamesPlayingData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+              {gamesPlayingData.map(game => <GameCard url={game?.cover?.url} key={game.id} game={game} />)}
             </ScrollView>
           </>) : ''
       }
@@ -171,7 +171,7 @@ export default function ProfileScreen({ navigation }) {
             <PrimaryTitle style={styles.mt20}>Wanted</PrimaryTitle>
 
             <ScrollView horizontal={true} >
-              {gamesWantData.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+              {gamesWantData.map(game => <GameCard url={game?.cover?.url} key={game.id} game={game} />)}
             </ScrollView>
           </>) : ''
       }

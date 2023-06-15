@@ -35,7 +35,7 @@ export default function Discover({ navigation }) {
       <Text style={styles.title}>Top 10 games of all time</Text>
 
       <ScrollView horizontal={true} >
-        {games.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+        {games.map(game => <GameCard url={game?.cover?.url} key={game.id} id={game.id} game={game} />)}
       </ScrollView>
 
     </View>

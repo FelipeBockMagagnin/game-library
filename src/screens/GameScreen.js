@@ -118,7 +118,7 @@ export default function GameScreen({ route, navigation }) {
         <View style={[styles.mt10]}>
           <ScrollView horizontal={true}>
             {game.screenshots?.map((screenshot, index) => {
-              return <ImageCover image_id={screenshot.image_id} />
+              return <ImageCover key={'cover' + index} image_id={screenshot.image_id} />
             })}
           </ScrollView>
         </View>
@@ -139,7 +139,7 @@ export default function GameScreen({ route, navigation }) {
             <View style={styles.flex}>
               <ScrollView horizontal={true}>
                 {game.genres?.map((genre, index) => {
-                  return <TagSecondary>{genre.name}</TagSecondary>
+                  return <TagSecondary key={'genre' + index}>{genre.name}</TagSecondary>
                 })}
               </ScrollView>
             </View>
@@ -151,7 +151,7 @@ export default function GameScreen({ route, navigation }) {
         <View style={styles.flex}>
           <ScrollView horizontal={true}>
             {game.platforms?.map((plataform, index) => {
-              return <TagSecondary>{plataform.name}</TagSecondary>
+              return <TagSecondary key={'platform' + index} >{plataform.name}</TagSecondary>
             })}
           </ScrollView>
         </View>

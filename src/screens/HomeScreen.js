@@ -65,20 +65,20 @@ export default function Home({ navigation }) {
         <PrimaryTitle>Popular</PrimaryTitle>
 
         <ScrollView horizontal={true} >
-          {games.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+          {games.map(game => <GameCard url={game?.cover?.url} key={game.id} game={game} />)}
         </ScrollView>
 
         <PrimaryTitle style={styles.mt20}>Recent</PrimaryTitle>
 
         <ScrollView horizontal={true} >
-          {recentGames.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+          {recentGames.map(game => <GameCard url={game?.cover?.url} key={game.id} game={game} />)}
         </ScrollView>
 
 
         <PrimaryTitle style={styles.mt20}>Upcoming</PrimaryTitle>
 
         <ScrollView horizontal={true} >
-          {upcomingGames.map(game => <GameCard url={game?.cover?.url} id={game.id} game={game} />)}
+          {upcomingGames.map(game => <GameCard url={game?.cover?.url} key={game.id} game={game} />)}
         </ScrollView>
       </ScrollView>
     </View>
